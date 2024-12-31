@@ -158,7 +158,8 @@ gasket_handle_interrupt(struct gasket_interrupt_data *interrupt_data,
 	read_lock(&interrupt_data->eventfd_ctx_lock);
 	ctx = interrupt_data->eventfd_ctxs[interrupt_index];
         if (ctx)
-                #if LINUX_VERSION_CODE >= KERNEL_VERSION(6,8,0)
+                #if LINUX_VERSION_CODE >= KERNEL_VERSION(6,8,0) || \
+                (defined RHEL_RELEASE_CODE && RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(9, 5))
                         eventfd_signal(ctx);
                 #else
                         eventfd_signal(ctx, 1);
